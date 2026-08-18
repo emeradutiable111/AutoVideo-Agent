@@ -1,0 +1,4 @@
+interface:
+  display_name: "AutoVideo Pipeline"
+  short_description: "Run AutoVideo-Agent storyboard-to-video builds"
+  default_prompt: "Turn examples/demo-script.md into a video and run QA."

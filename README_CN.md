@@ -1,31 +1,119 @@
 # AutoVideo-Agent
 
-面向 Agent 工作流的本地优先 Markdown 转视频工具。
+[![Tests](https://github.com/wangxin6x/AutoVideo-Agent/actions/workflows/test.yml/badge.svg)](https://github.com/wangxin6x/AutoVideo-Agent/actions/workflows/test.yml)
+[![Latest Release](https://img.shields.io/github/v/release/wangxin6x/AutoVideo-Agent?display_name=tag)](https://github.com/wangxin6x/AutoVideo-Agent/releases/latest)
+[![Python](https://img.shields.io/badge/python-3.10%2B-3776AB.svg)](https://www.python.org/)
+[![MIT License](https://img.shields.io/github/license/wangxin6x/AutoVideo-Agent.svg)](LICENSE)
 
-写一份简短分镜，执行一条命令即可得到确定性的构建目录：结构化 manifest、逐场景画面、静音时间轴，以及在安装 FFmpeg 时生成的 MP4。v0.1.0 不需要 API Key、云账号或私有素材。
+**把 Markdown 脚本变成可复现的视频流水线：分镜、场景资产、时间轴、QA 和 MP4。**
+
+面向 Codex、Claude Code、Gemini CLI 及其他 coding-agent 工作流。v0.1 是本地优先、确定性的首版：生成可检查的占位场景资产，并在安装 FFmpeg 时合成视频，不需要 API Key 或云账号。
+
+~~~text
+Markdown 脚本 -> Storyboard -> Scene Manifest -> Media -> Timeline -> FFmpeg -> QA -> MP4
+~~~
+
+> v0.1 不宣传 AI 视频生成。Media 使用 deterministic placeholder scene assets；真实 provider 已列入 Roadmap。
+
+## Demo
+
+Demo 使用 [examples/demo-script.md](examples/demo-script.md)，包含 3 个场景、7 秒总时长。
+
+~~~text
+输入                          流水线                           输出
+examples/demo-script.md  ->  autovideo run               ->  video.mp4
+                              解析 + manifest + assets       manifest.json
+                              静音 WAV + FFmpeg              report.json
+~~~
+
+![确定性场景卡片 Demo](docs/assets/demo.gif)
+
+~~~powershell
+autovideo run examples/demo-script.md
+~~~
+
+构建目录为 build/demo-script/。FFmpeg 存在时生成 video.mp4；否则保留可检查资产并报告 status: degraded。
 
 ## 快速开始
 
-```powershell
-python -m venv .venv
-.\.venv\Scripts\Activate.ps1
+~~~powershell
+git clone https://github.com/wangxin6x/AutoVideo-Agent.git
+cd AutoVideo-Agent
 python -m pip install -e .
 autovideo run examples/demo-script.md
-```
+~~~
 
-打开 `build/demo-script/video.mp4`。同一目录还包含 `manifest.json`、`report.json`、`scenes/` 和 `audio-silence.wav`。
+## Features
 
-## 分镜格式
+| 状态 | 能力 | 证据 |
+| --- | --- | --- |
+| ✅ 当前可用 | Markdown 分镜解析 | src/autovideo/parser.py |
+| ✅ 当前可用 | Scene manifest | manifest.json |
+| ✅ 当前可用 | 确定性离线资产 | PPM 场景卡片 |
+| ✅ 当前可用 | 静音 WAV 时间轴 | audio-silence.wav |
+| ✅ 当前可用 | FFmpeg MP4 渲染 | src/autovideo/render.py |
+| ✅ 当前可用 | 优雅降级 | report.json |
+| ✅ 当前可用 | CLI | autovideo run <script.md> |
+| ✅ 当前可用 | QA 报告 | report.json |
+| ✅ 当前可用 | Codex Skill / AGENTS integration | AGENTS.md 与 skills/auto-video/SKILL.md |
+| 🚧 计划中 | MiniMax | [#1](https://github.com/wangxin6x/AutoVideo-Agent/issues/1) |
+| 🚧 计划中 | ComfyUI | [#2](https://github.com/wangxin6x/AutoVideo-Agent/issues/2) |
+| 🚧 计划中 | TTS | [#3](https://github.com/wangxin6x/AutoVideo-Agent/issues/3) |
+| 🚧 计划中 | 字幕对齐 | [#4](https://github.com/wangxin6x/AutoVideo-Agent/issues/4) |
+| 🚧 计划中 | 真实媒体适配器 | [#5](https://github.com/wangxin6x/AutoVideo-Agent/issues/5) |
 
-每个二级标题 `##` 开始一个场景；`duration` 为秒数，`visual` 和 `narration` 会原样保存到 manifest，供后续素材与 TTS provider 使用。
+## Architecture
 
-## FFmpeg 降级
+~~~mermaid
+flowchart LR
+    Script[Markdown Script] --> Parser[Script Parser]
+    Parser --> Storyboard[Storyboard]
+    Storyboard --> Manifest[Scene Manifest]
+    Storyboard --> Providers[Provider Interface]
+    Providers --> Media[Media assets]
+    Media --> Timeline[Timeline]
+    Timeline --> Renderer[Renderer]
+    Renderer --> QA[QA report]
+    QA --> MP4[MP4 output]
+    VideoProvider[Video Provider - Planned] -. slot .-> Providers
+    TTSProvider[TTS Provider - Planned] -. slot .-> Providers
+    AssetProvider[Asset Provider - Planned] -. slot .-> Providers
+~~~
 
-FFmpeg 是可选项。找不到或执行失败时，工具仍会生成全部画面与元数据，输出 `status: degraded`，并在 `report.json` 中写明原因。
+当前渲染器只写入确定性占位卡片和静音音轨；provider 插槽是文档化方向，不代表已交付集成。
 
-## 版本路线
+## 在 Codex 中使用
 
-v0.2 计划接入 MiniMax、ComfyUI 和 TTS；第一版先保证一键运行、可测试和可审查。
+先读取 AGENTS.md，再按需读取 skills/auto-video/SKILL.md：
+
+> Turn examples/demo-script.md into a video and run QA. Use skills/auto-video/SKILL.md.
+
+实际 CLI：
+
+~~~powershell
+autovideo run examples/demo-script.md
+~~~
+
+QA 指检查命令结果以及 report.json/manifest.json，不代表已有独立 AI 质量评分器。这是仓库工作流，不是 Codex 或模型厂商的官方背书。
+
+## Roadmap
+
+- **v0.1 ✅**：本地解析、确定性场景卡片、静音时间轴、FFmpeg MP4、降级报告、测试和 Agent onboarding。
+- **v0.2**：MiniMax [#1](https://github.com/wangxin6x/AutoVideo-Agent/issues/1)、ComfyUI [#2](https://github.com/wangxin6x/AutoVideo-Agent/issues/2)、TTS [#3](https://github.com/wangxin6x/AutoVideo-Agent/issues/3)、字幕对齐 [#4](https://github.com/wangxin6x/AutoVideo-Agent/issues/4)。
+- **v0.3**：媒体适配器 [#5](https://github.com/wangxin6x/AutoVideo-Agent/issues/5)、跨平台 FFmpeg [#6](https://github.com/wangxin6x/AutoVideo-Agent/issues/6)、CI 渲染 [#9](https://github.com/wangxin6x/AutoVideo-Agent/issues/9)、更多格式 [#10](https://github.com/wangxin6x/AutoVideo-Agent/issues/10)。
+
+## 社区
+
+- [Issues](https://github.com/wangxin6x/AutoVideo-Agent/issues)
+- [Good First Issues](https://github.com/wangxin6x/AutoVideo-Agent/issues?q=is%3Aissue+is%3Aopen+label%3A%22good+first+issue%22)
+- [Feature Requests](https://github.com/wangxin6x/AutoVideo-Agent/issues/new?labels=enhancement&template=feature_request.md)
+- [Bug Reports](https://github.com/wangxin6x/AutoVideo-Agent/issues/new?labels=bug&template=bug_report.md)
+
+欢迎贡献文档、示例、跨平台改进和 provider 边界设计。提交前请运行 python -m pytest 和 git diff --check。
+
+## 中文与英文
+
+英文首页：[README.md](README.md)。
 
 ## 许可证
 
