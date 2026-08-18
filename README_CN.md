@@ -56,7 +56,7 @@ autovideo run examples/demo-script.md
 | ✅ 当前可用 | CLI | autovideo run <script.md> |
 | ✅ 当前可用 | QA 报告 | report.json |
 | ✅ 当前可用 | Codex Skill / AGENTS integration | AGENTS.md 与 skills/auto-video/SKILL.md |
-| ✅ 当前可用 | ComfyUI API 媒体 provider | API workflow 提交、轮询、重试、resume 与下载 |
+| 🧪 Experimental | ComfyUI API 媒体 provider | 已实现，等待真实 workflow 联调；包含提交、轮询、重试、resume 与下载 |
 | ✅ 当前可用 | Mock 与 Command TTS | 静音 fallback 或任意本地 TTS CLI |
 | ✅ 当前可用 | Scene-level SRT 字幕 | 使用真实 TTS 音频时长 |
 | 🚧 计划中 | MiniMax | [#1](https://github.com/wangxin6x/AutoVideo-Agent/issues/1) |
@@ -77,12 +77,16 @@ flowchart LR
     Timeline --> Renderer[Renderer]
     Renderer --> QA[QA report]
     QA --> MP4[MP4 output]
-    VideoProvider[ComfyUI Media Provider] -. media .-> Providers
+    VideoProvider[ComfyUI Media Provider - Experimental] -. media .-> Providers
     TTSProvider[Mock / Command TTS] -. audio .-> Providers
     AssetProvider[Asset Provider - Planned] -. slot .-> Providers
 ~~~
 
 当前渲染器只写入确定性占位卡片和静音音轨；provider 插槽是文档化方向，不代表已交付集成。
+
+### ComfyUI 验证状态
+
+ComfyUI API 行为已有 mock integration tests 覆盖，但 `v0.2.0-beta.1` 尚未针对真实 ComfyUI workflow 验证。Provider 已实现但仍属 Experimental，不应视为 production-ready；真实 image/video 联调记录在 [Issue #12](https://github.com/wangxin6x/AutoVideo-Agent/issues/12)。
 
 ## 在 Codex 中使用
 

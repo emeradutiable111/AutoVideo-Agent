@@ -60,7 +60,7 @@ FFmpeg is optional. With it, the output is an H.264 MP4 with a silent AAC track.
 | ✅ Available now | CLI | autovideo run <script.md> |
 | ✅ Available now | QA report | report.json |
 | ✅ Available now | Codex Skill / AGENTS integration | AGENTS.md and skills/auto-video/SKILL.md |
-| ✅ Available now | ComfyUI API media provider | API workflow submit, poll, retry, resume, and download |
+| 🧪 Experimental | ComfyUI API media provider | Implemented; API workflow submit, poll, retry, resume, and download; awaiting live validation |
 | ✅ Available now | Mock and command TTS providers | Silent fallback or any local TTS CLI |
 | ✅ Available now | Scene-level SRT subtitles | Timed from actual TTS audio duration |
 | 🚧 Planned | MiniMax | [#1](https://github.com/wangxin6x/AutoVideo-Agent/issues/1) |
@@ -81,12 +81,16 @@ flowchart LR
     Timeline --> Renderer[Renderer]
     Renderer --> QA[QA report]
     QA --> MP4[MP4 output]
-    VideoProvider[ComfyUI Media Provider] -. media .-> Providers
+    VideoProvider[ComfyUI Media Provider - Experimental] -. media .-> Providers
     TTSProvider[Mock / Command TTS] -. audio .-> Providers
     AssetProvider[Asset Provider - Planned] -. slot .-> Providers
 ~~~
 
 The current renderer creates deterministic placeholder cards and a silent audio track. Provider slots are documented extension points, not shipped integrations.
+
+### ComfyUI validation status
+
+The ComfyUI API behavior is covered by mocked integration tests, but `v0.2.0-beta.1` has not yet been validated against a live ComfyUI workflow. The provider is implemented and experimental; live image/video validation is tracked in [Issue #12](https://github.com/wangxin6x/AutoVideo-Agent/issues/12). Do not treat it as production-ready.
 
 ## Use with Codex
 
